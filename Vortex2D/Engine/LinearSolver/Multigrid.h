@@ -9,6 +9,7 @@
 #include <Vortex2D/Engine/LinearSolver/LinearSolver.h>
 #include <Vortex2D/Engine/LinearSolver/Preconditioner.h>
 #include <Vortex2D/Engine/LinearSolver/Transfer.h>
+#include <Vortex2D/Engine/LinearSolver/Scale.h>
 #include <Vortex2D/Engine/LinearSolver/Jacobi.h>
 #include <Vortex2D/Engine/LinearSolver/GaussSeidel.h>
 #include <Vortex2D/Engine/LevelSet.h>
@@ -109,9 +110,8 @@ private:
     // mResiduals[0] is level 0
     std::vector<Renderer::Buffer<float>> mResiduals;
 
-    Renderer::Work mPhiScaleWork;
-    std::vector<Renderer::Work::Bound> mSolidPhiScaleWorkBound;
-    std::vector<Renderer::Work::Bound> mLiquidPhiScaleWorkBound;
+    Scale mSolidPhiScale;
+    Scale mLiquidPhiScale;
 
     // mSolidPhis[0] and mLiquidPhis[0] is level 1
     std::vector<LevelSet> mSolidPhis;

@@ -51,7 +51,7 @@ Again, regular cmake commands should be use to configure cmake:
 
 .. code-block:: bash
 
-  cmake .. 
+  cmake ..
 
 macOS
 =====
@@ -60,7 +60,7 @@ In addition to the normal variables, we need to specify the location of MoltenVK
 
 .. code-block:: bash
 
-  cmake .. -DMOLTENVK_DIR=../../MoltenVK/Package/Latest/MoltenVK/ -DVORTEX2D_ENABLE_EXAMPLES=On
+  cmake .. -DMOLTENVK_DIR=../../MoltenVK/Package/Latest/MoltenVK/
 
 iOS
 ===
