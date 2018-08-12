@@ -23,7 +23,8 @@ public:
     VORTEX2D_API GenericBuffer(const Device& device,
                               vk::BufferUsageFlags usageFlags,
                               VmaMemoryUsage memoryUsage,
-                              vk::DeviceSize deviceSize);
+                              vk::DeviceSize deviceSize,
+                              const char* name = nullptr);
 
     VORTEX2D_API virtual ~GenericBuffer();
 
@@ -96,8 +97,11 @@ template<typename T>
 class VertexBuffer : public GenericBuffer
 {
 public:
-    VertexBuffer(const Device& device, std::size_t size, VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY)
-        : GenericBuffer(device, vk::BufferUsageFlagBits::eVertexBuffer, memoryUsage, sizeof(T) * size)
+    VertexBuffer(const Device& device,
+                 std::size_t size,
+                 VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+                 const char* name = nullptr)
+        : GenericBuffer(device, vk::BufferUsageFlagBits::eVertexBuffer, memoryUsage, sizeof(T) * size, name)
     {
     }
 };
@@ -109,8 +113,10 @@ template<typename T>
 class UniformBuffer : public GenericBuffer
 {
 public:
-    UniformBuffer(const Device& device, VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY)
-        : GenericBuffer(device, vk::BufferUsageFlagBits::eUniformBuffer, memoryUsage, sizeof(T))
+    UniformBuffer(const Device& device,
+                  VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+                  const char* name = nullptr)
+        : GenericBuffer(device, vk::BufferUsageFlagBits::eUniformBuffer, memoryUsage, sizeof(T), name)
     {
     }
 };
@@ -122,8 +128,11 @@ template<typename T>
 class Buffer : public GenericBuffer
 {
 public:
-    Buffer(const Device& device, std::size_t size = 1, VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY)
-        : GenericBuffer(device, vk::BufferUsageFlagBits::eStorageBuffer, memoryUsage, sizeof(T) * size)
+    Buffer(const Device& device,
+           std::size_t size = 1,
+           VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+           const char* name = nullptr)
+        : GenericBuffer(device, vk::BufferUsageFlagBits::eStorageBuffer, memoryUsage, sizeof(T) * size, name)
     {
     }
 };
@@ -135,8 +144,10 @@ template<typename T>
 class IndirectBuffer : public GenericBuffer
 {
 public:
-    IndirectBuffer(const Device& device, VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY)
-        : GenericBuffer(device, vk::BufferUsageFlagBits::eIndirectBuffer | vk::BufferUsageFlagBits::eStorageBuffer, memoryUsage, sizeof(T))
+    IndirectBuffer(const Device& device,
+                   VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+                   const char* name = nullptr)
+        : GenericBuffer(device, vk::BufferUsageFlagBits::eIndirectBuffer | vk::BufferUsageFlagBits::eStorageBuffer, memoryUsage, sizeof(T), name)
     {
     }
 };

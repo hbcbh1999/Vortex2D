@@ -31,7 +31,8 @@ void BufferBarrier(vk::Buffer buffer, vk::CommandBuffer commandBuffer, vk::Acces
 GenericBuffer::GenericBuffer(const Device& device,
                              vk::BufferUsageFlags usageFlags,
                              VmaMemoryUsage memoryUsage,
-                             vk::DeviceSize deviceSize)
+                             vk::DeviceSize deviceSize,
+                             const char* name)
     : mDevice(device)
     , mSize(deviceSize)
 {
@@ -54,6 +55,16 @@ GenericBuffer::GenericBuffer(const Device& device,
                         &mAllocationInfo) != VK_SUCCESS)
     {
       throw std::runtime_error("Error creating buffer");
+    }
+
+    if (name != nullptr)
+    {
+        vk::DebugMarkerObjectNameInfoEXT nameInfo;
+        nameInfo.setObject(HandleToUint64(mBuffer));
+        nameInfo.setObjectType(vk::DebugReportObjectTypeEXT::eBuffer);
+        nameInfo.setPObjectName(name);
+
+        mDevice.Handle().debugMarkerSetObjectNameEXT(nameInfo);
     }
 
     // TODO we shouldn't have to clear always in the constructor

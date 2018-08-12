@@ -15,8 +15,9 @@
 
 static PFN_vkCmdDebugMarkerBeginEXT vortex2d_vkCmdDebugMarkerBeginEXT = nullptr;
 static PFN_vkCmdDebugMarkerEndEXT vortex2d_vkCmdDebugMarkerEndEXT = nullptr;
+static PFN_vkDebugMarkerSetObjectNameEXT vortex2d_vkDebugMarkerSetObjectNameEXT = nullptr;
 
-VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerBeginEXT(VkCommandBuffer   commandBuffer,const  VkDebugMarkerMarkerInfoEXT *  pMarkerInfo)
+VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerBeginEXT(VkCommandBuffer commandBuffer, const VkDebugMarkerMarkerInfoEXT * pMarkerInfo)
 {
     if (vortex2d_vkCmdDebugMarkerBeginEXT)
     {
@@ -24,12 +25,22 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerBeginEXT(VkCommandBuffer   commandBuf
     }
 }
 
-VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerEndEXT(VkCommandBuffer   commandBuffer)
+VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerEndEXT(VkCommandBuffer commandBuffer)
 {
     if (vortex2d_vkCmdDebugMarkerEndEXT)
     {
         vortex2d_vkCmdDebugMarkerEndEXT(commandBuffer);
     }
+}
+
+VKAPI_ATTR VkResult VKAPI_CALL vkDebugMarkerSetObjectNameEXT(VkDevice device, const VkDebugMarkerObjectNameInfoEXT* pNameInfo)
+{
+    if (vortex2d_vkDebugMarkerSetObjectNameEXT)
+    {
+        return vortex2d_vkDebugMarkerSetObjectNameEXT(device, pNameInfo);
+    }
+
+    return VK_NOT_READY;
 }
 
 namespace Vortex2D { namespace Renderer {
@@ -147,6 +158,7 @@ Device::Device(vk::PhysicalDevice physicalDevice, int familyIndex, bool validati
     {
         vortex2d_vkCmdDebugMarkerBeginEXT = (PFN_vkCmdDebugMarkerBeginEXT) vkGetDeviceProcAddr(*mDevice, "vkCmdDebugMarkerBeginEXT");
         vortex2d_vkCmdDebugMarkerEndEXT = (PFN_vkCmdDebugMarkerEndEXT) vkGetDeviceProcAddr(*mDevice, "vkCmdDebugMarkerEndEXT");
+        vortex2d_vkDebugMarkerSetObjectNameEXT = (PFN_vkDebugMarkerSetObjectNameEXT)vkGetDeviceProcAddr(*mDevice, "vkDebugMarkerSetObjectNameEXT");
     }
 
     // create command pool
